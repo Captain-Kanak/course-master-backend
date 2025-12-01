@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express, { json } from "express";
+import bcrypt from "bcrypt";
 import connectMongooseDb from "./src/lib/connectMongooseDb.js";
+import User from "./src/models/user.model.js";
 
 // create express app and set port
 const app = express();
@@ -20,14 +22,100 @@ app.use(json());
 // ==================== API ENDPOINTS START HERE =====================
 // ===================================================================
 
-app.post("/register", (req, res) => {});
+//* register user
+app.post("/users", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-// ---------- server default response ----------
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, Email and Password are required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User Registered Successfully",
+      data: newUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//* get all user
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.find();
+
+    return res.status(200).json({
+      success: true,
+      message: "Users Fetched Successfully",
+      data: users,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//* get single user by email query
+app.get("/user", async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User Fetched Successfully",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//* ---------- server default response ----------
 // health check
 app.get("/", (req, res) => {
   return res.status(200).json({
     success: true,
-    message: "Hello World!",
+    message: "Welcome to Course Master Backend API",
   });
 });
 
@@ -36,6 +124,7 @@ app.use((req, res) => {
   return res.status(404).json({
     success: false,
     message: "Not Found",
+    route: req.url,
   });
 });
 
