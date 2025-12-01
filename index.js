@@ -1,15 +1,16 @@
-import dotenv from "dotenv";
-dotenv.config();
 import express, { json } from "express";
+import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import connectMongooseDb from "./src/lib/connectMongooseDb.js";
 import User from "./src/models/user.model.js";
 
-// create express app and set port
+dotenv.config();
+
+//* create express app and set port
 const app = express();
 const port = 5000;
 
-// middleware
+//* middleware
 app.use(json());
 // app.use(
 //   cors({
@@ -23,7 +24,7 @@ app.use(json());
 // ===================================================================
 
 //* register user
-app.post("/users", async (req, res) => {
+app.post("/api/users", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -65,8 +66,8 @@ app.post("/users", async (req, res) => {
   }
 });
 
-//* get all user
-app.get("/users", async (req, res) => {
+//* get all users
+app.get("/api/users", async (req, res) => {
   try {
     const users = await User.find();
 
@@ -84,7 +85,7 @@ app.get("/users", async (req, res) => {
 });
 
 //* get single user by email query
-app.get("/user", async (req, res) => {
+app.get("/api/user", async (req, res) => {
   try {
     const { email } = req.query;
 
@@ -111,7 +112,7 @@ app.get("/user", async (req, res) => {
 });
 
 //* ---------- server default response ----------
-// health check
+//* health check
 app.get("/", (req, res) => {
   return res.status(200).json({
     success: true,
@@ -119,7 +120,14 @@ app.get("/", (req, res) => {
   });
 });
 
-// not found route
+app.get("/api", (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "Welcome to Course Master Backend API",
+  });
+});
+
+//* not found route
 app.use((req, res) => {
   return res.status(404).json({
     success: false,
@@ -128,7 +136,7 @@ app.use((req, res) => {
   });
 });
 
-// Start server
+//* Start server
 const startServer = async () => {
   const dbConnectionStatus = await connectMongooseDb();
 
