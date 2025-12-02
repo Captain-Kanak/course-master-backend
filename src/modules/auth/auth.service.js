@@ -57,7 +57,7 @@ const login = async (email, password) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
+      { _id: user._id, email: user.email, role: user.role },
       config.jwtSecret,
       {
         expiresIn: "1d",
@@ -65,8 +65,17 @@ const login = async (email, password) => {
     );
 
     return {
-      user,
-      token,
+      success: true,
+      message: "User Logged In Successfully!",
+      data: {
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+        token,
+      },
     };
   } catch (error) {
     return {

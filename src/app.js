@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import { authRoutes } from "./modules/auth/auth.routes.js";
+import { userRoutes } from "./modules/user/user.routes.js";
 
 //* create express app
 const app = express();
@@ -29,6 +30,8 @@ app.get("/api", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/users", userRoutes);
 
 //* not found route
 app.use((req, res) => {

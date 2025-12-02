@@ -8,11 +8,7 @@ const register = async (req, res) => {
       return res.status(400).json(result);
     }
 
-    return res.status(200).json({
-      success: true,
-      message: "User Registered Successfully!",
-      data: result.data,
-    });
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -27,11 +23,7 @@ const login = async (req, res) => {
   try {
     const result = await authServices.login(email, password);
 
-    return res.status(200).json({
-      success: true,
-      message: "User Logged In Successfully!",
-      data: result,
-    });
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({
       success: false,
