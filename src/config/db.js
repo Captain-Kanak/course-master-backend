@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import config from "./index.js";
 
 const connectDB = async () => {
   try {
@@ -9,14 +10,14 @@ const connectDB = async () => {
       };
     }
 
-    if (!process.env.MONGODB_URI) {
+    if (!config.mongoURI) {
       return {
         success: false,
         message: "MONGODB_URI is not defined in environment variables.",
       };
     }
 
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(config.mongoURI);
 
     return {
       success: true,

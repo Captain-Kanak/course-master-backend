@@ -1,12 +1,10 @@
 import { Router } from "express";
+import { authControllers } from "./auth.controller.js";
 
 const router = Router();
 
-router.post("/login", (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "User Registered Successfully",
-  });
-});
+router.post("/register", authControllers.register);
+
+router.post("/login", authControllers.login);
 
 export const authRoutes = router;
