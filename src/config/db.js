@@ -10,7 +10,7 @@ const connectDB = async () => {
       };
     }
 
-    if (config.mongoURI) {
+    if (!config.mongoURI) {
       return {
         success: false,
         message: "MONGODB_URI is not defined in environment variables.",
@@ -18,8 +18,6 @@ const connectDB = async () => {
     }
 
     await mongoose.connect(config.mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       serverSelectionTimeoutMS: 10000,
     });
 
