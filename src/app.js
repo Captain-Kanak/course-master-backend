@@ -10,7 +10,10 @@ const app = express();
 app.use(json());
 app.use(
   cors({
-    origin: ["https://course-master-frontend-one.vercel.app"],
+    origin: [
+      "https://course-master-frontend-one.vercel.app",
+      "http://localhost:3000",
+    ],
     credentials: true,
   })
 );
