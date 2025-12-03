@@ -1,18 +1,19 @@
 import express, { json } from "express";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { userRoutes } from "./modules/user/user.routes.js";
+import cors from "cors";
 
 //* create express app
 const app = express();
 
 //* parse json
 app.use(json());
-// app.use(
-//   cors({
-//     origin: ["https://course-master-frontend-one.vercel.app"],
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: ["https://course-master-frontend-one.vercel.app"],
+    credentials: true,
+  })
+);
 
 //* ---------- routes ----------
 app.get("/", (req, res) => {
