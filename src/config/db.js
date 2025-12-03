@@ -17,7 +17,11 @@ const connectDB = async () => {
       };
     }
 
-    await mongoose.connect(config.mongoURI);
+    await mongoose.connect(config.mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000,
+    });
 
     return {
       success: true,
