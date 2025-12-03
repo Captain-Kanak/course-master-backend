@@ -33,9 +33,9 @@ app.get("/api", (req, res) => {
   });
 });
 
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
-app.use("/users", userRoutes);
+app.use("/api/users", userRoutes);
 
 //* not found route
 app.use((req, res) => {
