@@ -10,7 +10,7 @@ const connectDB = async () => {
       };
     }
 
-    if (!config.mongoURI) {
+    if (config.mongoURI) {
       return {
         success: false,
         message: "MONGODB_URI is not defined in environment variables.",
