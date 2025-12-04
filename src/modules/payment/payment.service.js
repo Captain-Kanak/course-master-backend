@@ -1,0 +1,79 @@
+import Stripe from "stripe";
+import Course from "../course/course.model.js";
+import config from "../../config/index.js";
+import Enrollment from "./enrollment.model.js";
+
+const stripe = new Stripe(config.stripeSecretKey);
+
+const createPaymentIntent = async (payload) => {
+  try {
+    const { courseId, user } = payload;
+
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+      return {
+        success: false,
+        message: "Course not found",
+      };
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: course.price,
+      currency: "usd",
+      metadata: {
+        courseId,
+        userId: user._id,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Payment intent created successfully",
+      data: paymentIntent,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+const confirmEnrollment = async (payload) => {
+  try {
+    const { courseId, user } = payload;
+
+    const isExist = await Enrollment.findOne({
+      userId: user._id,
+      courseId,
+    });
+
+    if (isExist) {
+      return {
+        success: false,
+        message: "User already enrolled in this course",
+      };
+    }
+
+    await Enrollment.create({
+      userId: user._id,
+      courseId,
+    });
+
+    return {
+      success: true,
+      message: "Enrollment confirmed successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+export const paymentServices = {
+  createPaymentIntent,
+  confirmEnrollment,
+};

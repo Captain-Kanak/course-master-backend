@@ -3,6 +3,7 @@ import cors from "cors";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { userRoutes } from "./modules/user/user.routes.js";
 import { courseRoutes } from "./modules/course/course.routes.js";
+import { paymentRoutes } from "./modules/payment/payment.routes.js";
 
 //* create express app
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/users", userRoutes);
 
 app.use("/api/courses", courseRoutes);
 
+app.use("/api/payments", paymentRoutes);
 
 //* not found route
 app.use((req, res) => {
