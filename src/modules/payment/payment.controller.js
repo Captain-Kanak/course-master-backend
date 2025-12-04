@@ -1,11 +1,12 @@
 import { paymentServices } from "./payment.service.js";
 
 const createPaymentIntent = async (req, res) => {
-  const { courseId, user } = req.body;
+  const { id, user } = req.body;
   // const user = req.user;
+
   try {
     const result = await paymentServices.createPaymentIntent({
-      courseId,
+      id,
       user,
     });
 

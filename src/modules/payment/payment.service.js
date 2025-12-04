@@ -7,9 +7,9 @@ const stripe = new Stripe(envConfig.stripeSecretKey);
 
 const createPaymentIntent = async (payload) => {
   try {
-    const { courseId, user } = payload;
+    const { id, user } = payload;
 
-    const course = await Course.findById(courseId);
+    const course = await Course.findById(id);
 
     if (!course) {
       return {
@@ -23,7 +23,7 @@ const createPaymentIntent = async (payload) => {
       currency: "usd",
       payment_method_types: ["card"],
       metadata: {
-        courseId,
+        courseId: id,
         userId: user._id,
       },
     });
@@ -31,7 +31,7 @@ const createPaymentIntent = async (payload) => {
     return {
       success: true,
       message: "Payment intent created successfully",
-      data: paymentIntent,
+      data: paymentIntent.client_secret,
     };
   } catch (error) {
     return {
