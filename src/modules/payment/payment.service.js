@@ -1,9 +1,9 @@
 import Stripe from "stripe";
 import Course from "../course/course.model.js";
-import config from "../../config/index.js";
 import Enrollment from "./enrollment.model.js";
+import envConfig from "../../config/index.js";
 
-const stripe = new Stripe(config.stripeSecretKey);
+const stripe = new Stripe(envConfig.stripeSecretKey);
 
 const createPaymentIntent = async (payload) => {
   try {
