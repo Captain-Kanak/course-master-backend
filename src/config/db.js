@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from "./index.js";
+import envConfig from "./index.js";
 
 const connectDB = async () => {
   try {
@@ -10,14 +10,14 @@ const connectDB = async () => {
       };
     }
 
-    if (!config.mongoURI) {
+    if (!envConfig.mongoURI) {
       return {
         success: false,
         message: "MONGODB_URI is not defined in environment variables.",
       };
     }
 
-    await mongoose.connect(config.mongoURI, {
+    await mongoose.connect(envConfig.mongoURI, {
       serverSelectionTimeoutMS: 10000,
     });
 
