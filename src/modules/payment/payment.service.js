@@ -19,8 +19,9 @@ const createPaymentIntent = async (payload) => {
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: course.price,
+      amount: course.price * 100,
       currency: "usd",
+      payment_method_types: ["card"],
       metadata: {
         courseId,
         userId: user._id,
