@@ -26,7 +26,12 @@ const register = async (payload) => {
     return {
       success: true,
       message: "User Registered Successfully!",
-      data: result,
+      data: {
+        _id: result._id,
+        name: result.name,
+        email: result.email,
+        role: result.role,
+      },
     };
   } catch (error) {
     return {
@@ -38,7 +43,7 @@ const register = async (payload) => {
 
 const login = async (email, password) => {
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
 
     if (!user) {
       return {
@@ -57,7 +62,7 @@ const login = async (email, password) => {
     }
 
     const token = jwt.sign(
-      { _id: user._id, email: user.email, role: user.role },
+      { _id: user._id, name: user.name, email: user.email, role: user.role },
       config.jwtSecret,
       {
         expiresIn: "1d",

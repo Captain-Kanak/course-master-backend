@@ -1,7 +1,8 @@
 import express, { json } from "express";
+import cors from "cors";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { userRoutes } from "./modules/user/user.routes.js";
-import cors from "cors";
+import { courseRoutes } from "./modules/course/course.routes.js";
 
 //* create express app
 const app = express();
@@ -36,6 +37,9 @@ app.get("/api", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 app.use("/api/users", userRoutes);
+
+app.use("/api/courses", courseRoutes);
+
 
 //* not found route
 app.use((req, res) => {
