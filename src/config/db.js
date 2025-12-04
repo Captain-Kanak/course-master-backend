@@ -20,10 +20,7 @@ const connectDB = async () => {
       serverSelectionTimeoutMS: 10000,
     });
 
-    return {
-      success: true,
-      message: "Connected to MongoDB using Mongoose",
-    };
+    console.log("mongoDB connected using mongoose");
   } catch (error) {
     return {
       success: false,

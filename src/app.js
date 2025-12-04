@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import cors from "cors";
+import connectDB from "./config/db.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { userRoutes } from "./modules/user/user.routes.js";
 import { courseRoutes } from "./modules/course/course.routes.js";
@@ -19,6 +20,8 @@ app.use(
     credentials: true,
   })
 );
+
+connectDB();
 
 //* ---------- routes ----------
 app.get("/", (req, res) => {
