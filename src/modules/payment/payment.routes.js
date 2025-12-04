@@ -5,6 +5,6 @@ const router = Router();
 
 router.post("/create-payment-intent", paymentControllers.createPaymentIntent);
 
-router.post("/confirm", paymentControllers.confirmEnrollment);
+router.post("/confirm-enrollment", paymentControllers.confirmEnrollment);
 
 export const paymentRoutes = router;
