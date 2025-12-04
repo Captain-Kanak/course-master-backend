@@ -1,8 +1,7 @@
 import app from "./app.js";
-import config from "./config/index.js";
 import connectDB from "./config/db.js";
 
-const port = config.port || 5000;
+const port = 5000;
 
 //* Start server
 const startServer = async () => {
