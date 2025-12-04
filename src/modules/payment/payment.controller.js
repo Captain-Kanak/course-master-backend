@@ -24,10 +24,10 @@ const createPaymentIntent = async (req, res) => {
 };
 
 const confirmEnrollment = async (req, res) => {
-  const { courseId } = req.body;
-  const user = req.user;
+  const { id, user } = req.body;
+
   try {
-    const result = await paymentServices.confirmEnrollment({});
+    const result = await paymentServices.confirmEnrollment({ id, user });
   } catch (error) {
     return res.status(500).json({
       success: false,

@@ -43,7 +43,7 @@ const createPaymentIntent = async (payload) => {
 
 const confirmEnrollment = async (payload) => {
   try {
-    const { courseId, user } = payload;
+    const { id: courseId, user } = payload;
 
     const isExist = await Enrollment.findOne({
       userId: user._id,
