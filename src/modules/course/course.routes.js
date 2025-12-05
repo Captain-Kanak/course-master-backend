@@ -10,4 +10,6 @@ router.get("/", courseController.getCourses);
 
 router.get("/:id", courseController.getCourseById);
 
+router.get("/enrolled", authMiddleware("user"), courseController.getEnrolled);
+
 export const courseRoutes = router;

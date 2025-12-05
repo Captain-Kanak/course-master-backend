@@ -53,8 +53,27 @@ const getCourseById = async (req, res) => {
   }
 };
 
+const getEnrolled = async (req, res) => {
+  const user = req.user;
+  try {
+    const result = await courseServices.getEnrolled(user._id);
+
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export const courseController = {
   addCourse,
   getCourses,
   getCourseById,
+  getEnrolled,
 };

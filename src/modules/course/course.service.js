@@ -1,3 +1,4 @@
+import Enrollment from "../payment/enrollment.model.js";
 import Course from "./course.model.js";
 
 const addCourse = async (payload) => {
@@ -63,7 +64,6 @@ const getCourses = async (queryParams) => {
     if (sort === "newest") sortOption.createdAt = -1;
     if (sort === "popular") sortOption.enrollCount = -1;
 
-
     const skip = (page - 1) * limit;
 
     const courses = await Course.find(query)
@@ -118,8 +118,39 @@ const getCourseById = async (id) => {
   }
 };
 
+const getEnrolled = async (id) => {
+  try {
+    const result = await Enrollment.find({ userId: id }).lean().exec();
+
+    if (!result) {
+      return {
+        success: false,
+        message: "Enrollments not found",
+      };
+    }
+
+    const courseIds = result.map((enrollment) => enrollment.courseId);
+
+    const courses = await Course.find({ _id: { $in: courseIds } })
+      .lean()
+      .exec();
+
+    return {
+      success: true,
+      message: "Enrollments fetched successfully",
+      data: courses,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
 export const courseServices = {
   addCourse,
   getCourses,
   getCourseById,
+  getEnrolled,
 };
