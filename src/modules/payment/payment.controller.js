@@ -1,8 +1,8 @@
 import { paymentServices } from "./payment.service.js";
 
 const createPaymentIntent = async (req, res) => {
-  const { id, user } = req.body;
-  // const user = req.user;
+  const { id } = req.body;
+  const user = req.user;
 
   try {
     const result = await paymentServices.createPaymentIntent({
@@ -24,7 +24,8 @@ const createPaymentIntent = async (req, res) => {
 };
 
 const confirmEnrollment = async (req, res) => {
-  const { id, user } = req.body;
+  const { id } = req.body;
+  const user = req.user;
 
   try {
     const result = await paymentServices.confirmEnrollment({ id, user });

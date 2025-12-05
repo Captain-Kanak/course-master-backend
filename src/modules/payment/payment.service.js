@@ -7,9 +7,9 @@ const stripe = new Stripe(envConfig.stripeSecretKey);
 
 const createPaymentIntent = async (payload) => {
   try {
-    const { id, user } = payload;
+    const { id: courseId, user } = payload;
 
-    const course = await Course.findById(id);
+    const course = await Course.findById(courseId);
 
     if (!course) {
       return {
@@ -21,9 +21,9 @@ const createPaymentIntent = async (payload) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: course.price * 100,
       currency: "usd",
-      payment_method_types: ["card"],
+      automatic_payment_methods: { enabled: true },
       metadata: {
-        courseId: id,
+        courseId,
         userId: user._id,
       },
     });
