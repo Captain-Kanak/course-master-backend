@@ -21,6 +21,7 @@ app.use(
   })
 );
 
+//* connect to database
 connectDB();
 
 //* ---------- routes ----------
