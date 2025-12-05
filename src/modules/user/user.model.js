@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    image: {
+      type: String,
+    },
     email: {
       type: String,
       unique: true,
@@ -17,8 +20,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ["student", "admin"],
+      default: "student",
     },
   },
   {

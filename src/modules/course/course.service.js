@@ -24,21 +24,65 @@ const addCourse = async (payload) => {
   }
 };
 
-const getCourses = async () => {
+const getCourses = async (queryParams) => {
   try {
-    const result = await Course.find().lean().exec();
+    let {
+      page = 1,
+      limit = 10,
+      search = "",
+      category,
+      tags,
+      sort,
+    } = queryParams;
 
-    if (!result) {
-      return {
-        success: false,
-        message: "No courses found",
-      };
+    page = Number(page);
+    limit = Number(limit);
+
+    const query = {};
+
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { instructorName: { $regex: search, $options: "i" } },
+      ];
     }
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (tags) {
+      const tagArray = tags.split(",");
+      query.tags = { $in: tagArray };
+    }
+
+    let sortOption = {};
+
+    if (sort === "price_asc") sortOption.price = 1;
+    if (sort === "price_desc") sortOption.price = -1;
+    if (sort === "newest") sortOption.createdAt = -1;
+
+    const skip = (page - 1) * limit;
+
+    const courses = await Course.find(query)
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit)
+      .lean()
+      .exec();
+
+    const total = await Course.countDocuments(query);
 
     return {
       success: true,
       message: "Courses fetched successfully",
-      data: result,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+      data: courses,
     };
   } catch (error) {
     return {

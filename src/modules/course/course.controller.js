@@ -19,7 +19,7 @@ const addCourse = async (req, res) => {
 
 const getCourses = async (req, res) => {
   try {
-    const result = await courseServices.getCourses();
+    const result = await courseServices.getCourses(req.query);
 
     if (!result.success) {
       return res.status(400).json(result);
