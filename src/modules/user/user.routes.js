@@ -8,10 +8,10 @@ router.get("/", authMiddleware("admin"), userControllers.getUsers);
 
 router.get(
   "/:id",
-  authMiddleware("admin", "user"),
+  authMiddleware("admin", "student"),
   userControllers.getUserById
 );
 
-router.patch("/:id", authMiddleware("user"), userControllers.updateUser);
+router.patch("/:id", authMiddleware("student"), userControllers.updateUser);
 
 export const userRoutes = router;

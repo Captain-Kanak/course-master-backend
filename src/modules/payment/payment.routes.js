@@ -6,13 +6,13 @@ const router = Router();
 
 router.post(
   "/create-payment-intent",
-  authMiddleware("user"),
+  authMiddleware("student"),
   paymentControllers.createPaymentIntent
 );
 
 router.post(
   "/confirm-enrollment",
-  authMiddleware("user"),
+  authMiddleware("student"),
   paymentControllers.confirmEnrollment
 );
 
