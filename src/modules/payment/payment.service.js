@@ -24,7 +24,7 @@ const createPaymentIntent = async (payload) => {
       automatic_payment_methods: { enabled: true },
       metadata: {
         courseId,
-        userId: user._id,
+        userId: user._id.toString(),
       },
     });
 
