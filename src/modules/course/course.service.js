@@ -61,6 +61,8 @@ const getCourses = async (queryParams) => {
     if (sort === "price_asc") sortOption.price = 1;
     if (sort === "price_desc") sortOption.price = -1;
     if (sort === "newest") sortOption.createdAt = -1;
+    if (sort === "popular") sortOption.enrollCount = -1;
+
 
     const skip = (page - 1) * limit;
 
